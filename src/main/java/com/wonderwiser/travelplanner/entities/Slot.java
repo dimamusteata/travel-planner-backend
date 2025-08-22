@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,16 +25,21 @@ public class Slot {
 	private SlotStatus status;
 	private String notes;
 	
+	@ManyToOne
+	@JoinColumn(name = "itinerary_id")
+	private Itinerary itinerary;
+	
 	public Slot() {
 		
 	}
 
-	public Slot(Long id, TimeOfDay timeofDay, String activityName, SlotStatus status, String notes) {
+	public Slot(Long id, TimeOfDay timeofDay, String activityName, SlotStatus status, String notes, Itinerary itinierary) {
 		this.id = id;
 		this.timeOfDay = timeofDay;
 		this.activityName = activityName;
 		this.status = status;
 		this.notes = notes;
+		this.itinerary = itinierary;
 	}
 
 	public Long getId() {
@@ -73,6 +80,23 @@ public class Slot {
 
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+
+
+	public TimeOfDay getTimeOfDay() {
+		return timeOfDay;
+	}
+
+	public void setTimeOfDay(TimeOfDay timeOfDay) {
+		this.timeOfDay = timeOfDay;
+	}
+
+	public Itinerary getItinerary() {
+		return itinerary;
+	}
+
+	public void setItinerary(Itinerary itinerary) {
+		this.itinerary = itinerary;
 	}
 
 	@Override

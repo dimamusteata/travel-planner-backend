@@ -7,5 +7,4 @@ import com.wonderwiser.travelplanner.entities.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 	
 	
-
 }

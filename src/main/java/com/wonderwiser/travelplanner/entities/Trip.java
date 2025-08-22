@@ -1,12 +1,21 @@
 package com.wonderwiser.travelplanner.entities;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,15 +29,26 @@ public class Trip {
 	private LocalDate startDate;
 	private LocalDate endDate;
 	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	@JsonIgnore
+	private User user;
+	
+	
+	@OneToMany(mappedBy = "trip")
+	private Set<Itinerary> itineraries = new HashSet<>();
+	
+	
 	public Trip() {
 		
 	}
 
-	public Trip(Long id, String title, LocalDate startDate, LocalDate endDate) {
+	public Trip(Long id, String title, LocalDate startDate, LocalDate endDate, User user) {
 		this.id = id;
 		this.title = title;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.user = user;
 	}
 
 	public Long getId() {
@@ -62,6 +82,20 @@ public class Trip {
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	
+	public Set<Itinerary> getItineraries() {
+		return itineraries;
+	}
+
 
 	@Override
 	public int hashCode() {

@@ -1,11 +1,14 @@
 package com.wonderwiser.travelplanner.entities;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,6 +21,10 @@ public class User {
 	private String name;
 	private String email;
 	private String password;
+	
+	
+	@OneToMany(mappedBy = "user")
+	private Set<Trip> trips = new HashSet<>();
 	
 	public User() {
 		
@@ -60,6 +67,10 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public Set<Trip> getTrips() { 
+		return trips; 
 	}
 
 	@Override

@@ -42,25 +42,27 @@ public class TestConfig implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		
 		
-		// Cria os Objetos
 		User user1 = new User(null, "Alex Green", "alex@gmail.com", "1q2w3e");
 		User user2 = new User(null, "Mary Grey", "mary@hotmail.com", "12345");
 		
-		Slot slot1 = new Slot(null, TimeOfDay.MORNING, "Walk on the beach", SlotStatus.RESERVERD, "Also visit the local Cofe and try the expresso late, everyone seems to love it");
-		Slot slot2 = new Slot(null, TimeOfDay.AFTERNOON, "Go to the crazy disco club", SlotStatus.RESERVERD, "Tonights its Afro night :)");
-	
-		Itinerary it1 = new Itinerary(null, LocalDate.now()); 
-		Itinerary it2 = new Itinerary(null, LocalDate.of(2025, 12, 20)); 
-		
-		Trip trip1= new Trip(null, "Canada", LocalDate.of(2025, 12, 18), LocalDate.of(2026, 1, 3));
-		Trip trip2= new Trip(null, "Madeira", LocalDate.of(2025, 8, 22), LocalDate.of(2025, 8, 24));
-		
-		// Guarda na BD
 		userRepository.saveAll(Arrays.asList(user1, user2));
-		slotRepository.saveAll(Arrays.asList(slot1, slot2));
-		itineraryRepository.saveAll(Arrays.asList(it1, it2));
-		tripRepository.saveAll(Arrays.asList(trip1, trip2));
 		
+		Trip trip1= new Trip(null, "Canada", LocalDate.of(2025, 12, 18), LocalDate.of(2026, 1, 3), user1);
+		Trip trip2= new Trip(null, "Madeira", LocalDate.of(2025, 8, 22), LocalDate.of(2025, 8, 24), user2);
+		
+		tripRepository.saveAll(Arrays.asList(trip1, trip2));
+		user1.getTrips().add(trip1);
+		user2.getTrips().add(trip2);
+		
+		Itinerary it1 = new Itinerary(null, LocalDate.now(), trip1); 
+		Itinerary it2 = new Itinerary(null, LocalDate.of(2025, 12, 20), trip2); 
+
+		itineraryRepository.saveAll(Arrays.asList(it1, it2));
+		
+		Slot slot1 = new Slot(null, TimeOfDay.MORNING, "Walk on the beach", SlotStatus.RESERVERD, "Also visit the local CofeShop and try the expresso late, everyone seems to love it", it1);
+		Slot slot2 = new Slot(null, TimeOfDay.AFTERNOON, "Go to the crazy disco club", SlotStatus.RESERVERD, "Tonights its Afro night :)", it2);
+		
+		slotRepository.saveAll(Arrays.asList(slot1, slot2));
 		
 	}
 
