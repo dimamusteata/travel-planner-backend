@@ -1,11 +1,13 @@
 package com.wonderwiser.travelplanner.entities;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wonderwiser.travelplanner.entities.enums.SlotStatus;
 import com.wonderwiser.travelplanner.entities.enums.TimeOfDay;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +27,10 @@ public class Slot {
 	private String activityName;
 	private SlotStatus status;
 	private String notes;
+	@Column(name = "slot_day") 
+	private LocalDate day;
+
+
 	
 	@ManyToOne
 	@JoinColumn(name = "itinerary_id")
@@ -67,6 +73,9 @@ public class Slot {
 	public void setActivityName(String activityName) {
 		this.activityName = activityName;
 	}
+	
+	public LocalDate getDay() { return day; }
+	public void setDay(LocalDate day) { this.day = day; }
 
 	public SlotStatus getStatus() {
 		return status;
@@ -102,21 +111,19 @@ public class Slot {
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(id);
+	public boolean equals(Object obj) {
+	    if (this == obj) return true;
+	    if (obj == null || getClass() != obj.getClass()) return false;
+	    Slot other = (Slot) obj;
+	    // Se algum id é null, considere diferentes (evita colapsar no Set)
+	    if (this.id == null || other.id == null) return false;
+	    return Objects.equals(this.id, other.id);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Slot other = (Slot) obj;
-		return Objects.equals(id, other.id);
+	public int hashCode() {
+	    // Se id é null, usa um hash constante pequeno para não quebrar o contrato
+	    return (id == null) ? 31 : id.hashCode();
 	}
-	
 	
 }

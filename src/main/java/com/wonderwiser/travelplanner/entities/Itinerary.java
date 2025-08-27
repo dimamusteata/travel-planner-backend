@@ -1,12 +1,14 @@
 package com.wonderwiser.travelplanner.entities;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,9 +37,9 @@ public class Itinerary {
 	private Trip trip;
 	
 	
-	@OneToMany(mappedBy = "itinerary")
+	@OneToMany(mappedBy = "itinerary", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("timeOfDay ASC")
-	private Set<Slot> slots = new HashSet<>();
+	private List<Slot> slots = new ArrayList<>();
 	
 	public Itinerary() {
 		
@@ -73,7 +75,7 @@ public class Itinerary {
 		this.trip = trip;
 	}
 
-	public Set<Slot> getSlots() {
+	public List<Slot> getSlots() {
 		return slots;
 	}
 
