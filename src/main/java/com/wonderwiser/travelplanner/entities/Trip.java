@@ -31,11 +31,11 @@ public class Trip {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	@JsonIgnore
 	private User user;
 	
 	
 	@OneToMany(mappedBy = "trip")
+	@JsonIgnore
 	private Set<Itinerary> itineraries = new HashSet<>();
 	
 	

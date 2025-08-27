@@ -2,6 +2,7 @@ package com.wonderwiser.travelplanner.entities;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wonderwiser.travelplanner.entities.enums.SlotStatus;
 import com.wonderwiser.travelplanner.entities.enums.TimeOfDay;
 
@@ -27,6 +28,7 @@ public class Slot {
 	
 	@ManyToOne
 	@JoinColumn(name = "itinerary_id")
+	@JsonIgnore
 	private Itinerary itinerary;
 	
 	public Slot() {

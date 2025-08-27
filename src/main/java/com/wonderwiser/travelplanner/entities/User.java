@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class User {
 	
 	
 	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private Set<Trip> trips = new HashSet<>();
 	
 	public User() {

@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +31,7 @@ public class Itinerary {
 
 	@ManyToOne()
 	@JoinColumn(name = "trip_id")
+	@JsonIgnore
 	private Trip trip;
 	
 	
