@@ -3,6 +3,8 @@ package com.wonderwiser.travelplanner.resources;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import com.wonderwiser.travelplanner.services.ItineraryGeneratorService;
 
 import jakarta.persistence.EntityNotFoundException;
 
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
 @RequestMapping("/trips")
 public class TripItineraryResource {
@@ -36,6 +39,14 @@ public class TripItineraryResource {
         List<Slot> slots = generator.generateForTrip(id);
         List<SlotResponse> body = slots.stream().map(SlotResponse::of).toList();
         return ResponseEntity.ok(body);
+    }
+    
+    
+    @GetMapping("/{id}/slots")
+    public ResponseEntity<List<SlotResponse>> list(@PathVariable Long id) {
+        var slots = slotRepo.findByItinerary_Trip_IdOrderByDayAscTimeOfDayAsc(id)
+                            .stream().map(SlotResponse::of).toList();
+        return ResponseEntity.ok(slots);
     }
 
     // PATCH /trips/{id}/slots/{slotId}

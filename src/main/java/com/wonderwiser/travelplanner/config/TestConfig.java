@@ -17,10 +17,13 @@ import com.wonderwiser.travelplanner.repositories.ItineraryRepository;
 import com.wonderwiser.travelplanner.repositories.SlotRepository;
 import com.wonderwiser.travelplanner.repositories.TripRepository;
 import com.wonderwiser.travelplanner.repositories.UserRepository;
+import com.wonderwiser.travelplanner.services.ItineraryGeneratorService;
 
 @Configuration
 @Profile("test")
 public class TestConfig implements CommandLineRunner{
+
+    private final ItineraryGeneratorService itineraryGeneratorService;
 
 	private final UserRepository userRepository;
 	private final SlotRepository slotRepository;
@@ -29,12 +32,13 @@ public class TestConfig implements CommandLineRunner{
 	
 	
 	public TestConfig(UserRepository userRepository, SlotRepository slotRepository, 
-			ItineraryRepository itineraryRepository, TripRepository tripRepository) {
+			ItineraryRepository itineraryRepository, TripRepository tripRepository, ItineraryGeneratorService itineraryGeneratorService) {
 		
 		this.userRepository = userRepository;
 		this.slotRepository = slotRepository;
 		this.itineraryRepository = itineraryRepository;
 		this.tripRepository = tripRepository;
+		this.itineraryGeneratorService = itineraryGeneratorService;
 	}
 	
 	
@@ -62,8 +66,13 @@ public class TestConfig implements CommandLineRunner{
 		Slot slot1 = new Slot(null, TimeOfDay.MORNING, "Walk on the beach", SlotStatus.RESERVERD, "Also visit the local CofeShop and try the expresso late, everyone seems to love it", it1);
 		Slot slot2 = new Slot(null, TimeOfDay.AFTERNOON, "Go to the crazy disco club", SlotStatus.RESERVERD, "Tonights its Afro night :)", it2);
 		
-		slotRepository.saveAll(Arrays.asList(slot1, slot2));
+		ItineraryGeneratorService slotGenerator = new ItineraryGeneratorService(tripRepository, itineraryRepository);
 		
+		 // 3) gerar slots para cada trip (idempotente)
+	    itineraryGeneratorService.generateForTrip(trip1.getId());
+	    itineraryGeneratorService.generateForTrip(trip2.getId());
+		
+	    
 	}
 
 }
